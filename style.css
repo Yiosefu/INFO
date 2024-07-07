@@ -1,0 +1,193 @@
+body{
+    background-color:rgba(104, 35, 35, 0.83);
+    font-size: 24px;
+    font-family: 'Pattanakan Condensed','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin:0;
+    padding:0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+} 
+#wrapper{
+    width: 1920px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    background-image: url(bg.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    
+}
+#container{   
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(104, 35, 35, 0.83), rgba(255, 255, 255, 0.7));
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
+#login{
+    width: 80%;
+    margin:70px 10px;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#icon{
+    width: 20%;
+    margin:40px 20px;
+    padding:10px 40px 10px 0px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    align-items: center;
+}
+
+#icon img{
+   width: 200%;
+}
+
+#input_form{
+    width: 60%;
+    margin:10px 20px;
+    padding:10px 0;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+#form1{
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 60px;
+}
+
+#form1 p{
+    width: 200%;
+    font-style: italic;
+    color: rgba(235, 198, 35, 0.822);
+}
+
+#form1 input{
+    width: 80%;
+    height: 30px;
+    margin: 5px;
+    font-family: relative;
+}
+
+input[type="text"], input[type="password"]{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+::placeholder {
+    color: rgb(201, 198, 198);
+    font-size: 100%;
+    text-transform:uppercase;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#username, #password{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#submit_btn{
+    width: 50%;
+    height: 50px;
+    background-color:rgba(104, 35, 35) ;
+    font-size: 100%;
+    text-align: center;
+    box-shadow: 0 0 50px rgb(199, 32, 32);
+}
+#submit_btn:hover{
+    background-color:rgb(150, 12, 12) ;
+    box-shadow: 0 0 50px rgb(199, 32, 32);
+    transform: scale(1.2);
+}
+
+/*2nd page*/
+
+#form2{
+ width: 100%; 
+ justify-content: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;  
+}
+
+#form2 h2{
+    width: 200%;
+    font-style: italic;
+    color: rgba(235, 198, 35, 0.822);
+}
+
+#form2 input{
+    width: 80%;
+    height: 30px;
+    margin: 5px;
+    font-family: relative;
+    
+}
+#info{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+}
+#title{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#name, #otherinfo{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#name input, #otherinfo input{
+    width: 100%;
+    display: flex;
+    padding: 10px; 
+}
+
+

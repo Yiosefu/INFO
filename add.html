@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="add.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div id="container">
+            <div class="navbar">
+                <ul>
+                    <div id="logo">
+                        <a href="#"><img src="puplogo.png" id="logoicon"></a>
+                    </div>
+                    <div id="logotitle">
+                        <a href="#"> User Profile</a>
+                    </div>
+                    <li><a href="add.html">Home</a></li>
+                    <li><a href="accounts.html">Accounts</a></li>
+                </ul>
+            </div>
+            <div id="pagetitle">
+                <h1 id="webtitle">Add Student</h1>
+            </div>
+            <div class="form-container">
+                <div id="pictureContainer">
+                    <img src="user.png" id="userpic">
+                </div>
+                <form id="addStudentForm">
+                    <input type="text" id="newSurname" placeholder="Surname" required>
+                    <input type="text" id="newFirstName" placeholder="First Name" required>
+                    <input type="number" id="newAge" placeholder="Age" required>
+                    <input type="text" id="newSex" placeholder="Sex" required>
+                    <input type="file" id="picture" name="picture" accept="image/*" required>
+                    <button type="submit">Add Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const surname = document.getElementById('newSurname').value;
+            const firstName = document.getElementById('newFirstName').value;
+            const age = document.getElementById('newAge').value;
+            const sex = document.getElementById('newSex').value;
+            const imageUpload = document.getElementById('picture');
+
+            // Retrieve existing students and image paths from localStorage
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            let imagePaths = JSON.parse(localStorage.getItem('imagePaths')) || [];
+
+            if (imageUpload.files && imageUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Add uploaded image path to imagePaths array
+                    imagePaths.push(e.target.result);
+
+                    // Save updated imagePaths array to localStorage
+                    localStorage.setItem('imagePaths', JSON.stringify(imagePaths));
+
+                    // Add new student to students array
+                    students.push({ surname, firstName, age, sex });
+
+                    // Save updated students array to localStorage
+                    localStorage.setItem('students', JSON.stringify(students));
+
+                    // Redirect to Accounts page
+                    window.location.href = 'accounts.html';
+                };
+                reader.readAsDataURL(imageUpload.files[0]);
+            } else {
+                // If no image uploaded, add student without image path
+                students.push({ surname, firstName, age, sex });
+                localStorage.setItem('students', JSON.stringify(students));
+                window.location.href = 'accounts.html';
+            }
+        });
+    </script>
+    <!--<script src="index.js"></script>-->
+</body>
+</html>

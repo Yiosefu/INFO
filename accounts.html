@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+    <link rel="stylesheet" href="accounts.css">  
+</head>
+<body>
+        <div class="wrapper">
+        <div id="container">
+            <div class="navbar">
+                <ul>
+                    <div id="logo">
+                        <a href="#"><img src="puplogo.png" id="logoicon"></a>
+                    </div>
+                    <div id="logotitle">
+                        <a href="#"> User Profile</a>
+                    </div>
+                    <li><a href="add.html">Home</a></li>
+                    <li><a href="accounts.html">Accounts</a></li>
+                </ul>
+            </div>
+            <div id="pagetitle">
+                <h1 id="webtitle">Accounts</h1>
+            </div>
+            <div id="container2">
+                <div id="pictureContainer">
+                    <img src="user.png" id="userpic">
+                </div>
+                <div id="info">
+                    <table id="infoTable">
+                        <tr>
+                            <td>Surname</td>
+                            <td>First Name</td>
+                            <td>Age</td>
+                            <td>Sex</td>
+                            <td><button><a href="add.html">Add Student</a></button></td>
+                        </tr>
+                        <!-- Placeholder for dynamically generated rows -->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const presavedSurnames = ["Casaclang", "Imperial", "Hernandez", "Untolan", "Itoc"];
+            const presavedFirstnames = ["John Joseph", "Chester", "John Kennedy", "Jeffrick", "Joel"];
+            const presavedAges = ["20", "20", "22", "20", "21"];
+            const presavedSexes = ["Male", "Male", "Male", "Male", "Male"];
+            const presavedImagePaths = [
+                'joseph.jpg',
+                'chester.jpg',
+                'kennedy.jpg',
+                'jeffrick.jpeg',
+                'Joel.jpg',
+                // Add more image paths as needed
+            ];
+
+            const table = document.getElementById('infoTable');
+            const pictureContainer = document.getElementById('pictureContainer');
+            const userpic = document.getElementById('userpic');
+
+            // Retrieve students and image paths from localStorage
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            let imagePaths = JSON.parse(localStorage.getItem('imagePaths')) || [];
+
+            // Combine presaved elements with stored elements
+            students = students.length > 0 ? students : presavedSurnames.map((surname, index) => ({
+                surname,
+                firstName: presavedFirstnames[index],
+                age: presavedAges[index],
+                sex: presavedSexes[index],
+            }));
+
+            imagePaths = imagePaths.length > 0 ? imagePaths : presavedImagePaths;
+
+            // Save the combined data back to localStorage
+            if (localStorage.getItem('students') === null) {
+                localStorage.setItem('students', JSON.stringify(students));
+                localStorage.setItem('imagePaths', JSON.stringify(imagePaths));
+            }
+
+            // Function to create table rows
+            function createTableRow(surname, firstname, age, sex, index) {
+                const row = document.createElement('tr');
+
+                const surnameCell = document.createElement('td');
+                surnameCell.textContent = surname;
+                row.appendChild(surnameCell);
+
+                const firstnameCell = document.createElement('td');
+                firstnameCell.textContent = firstname;
+                row.appendChild(firstnameCell);
+
+                const ageCell = document.createElement('td');
+                ageCell.textContent = age;
+                row.appendChild(ageCell);
+
+                const sexCell = document.createElement('td');
+                sexCell.textContent = sex;
+                row.appendChild(sexCell);
+
+                const buttonCell = document.createElement('td');
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.addEventListener('click', () => editRow(row, index));
+                buttonCell.appendChild(editButton);
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.addEventListener('click', () => removeRow(row, index));
+                buttonCell.appendChild(removeButton);
+
+                const saveButton = document.createElement('button');
+                saveButton.textContent = 'Save';
+                saveButton.style.display = 'none'; // Initially hide save button
+                saveButton.addEventListener('click', () => saveRow(row, index));
+                buttonCell.appendChild(saveButton);
+
+                row.appendChild(buttonCell);
+
+                // Event listener to show picture on row click
+                row.addEventListener('click', () => showPicture(index));
+
+                return row;
+            }
+
+            // Function to edit a row
+            function editRow(row, index) {
+                const cells = row.querySelectorAll('td');
+                for (let i = 0; i < cells.length - 1; i++) {
+                    const cellContent = cells[i].textContent;
+                    cells[i].innerHTML = `<input type="text" value="${cellContent}" class="editable-input">`;
+                }
+                row.querySelector('button:nth-child(1)').style.display = 'none'; // Hide edit button
+                row.querySelector('button:nth-child(2)').style.display = 'none'; // Hide remove button
+                row.querySelector('button:nth-child(3)').style.display = 'inline'; // Display save button
+
+                // Create file input for uploading image
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'block'; // Initially visible
+                fileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Update imagePaths array with the uploaded image
+                            imagePaths[index] = e.target.result;
+                            // Save updated imagePaths to localStorage
+                            localStorage.setItem('imagePaths', JSON.stringify(imagePaths));
+                            // Display the updated image
+                            showPicture(index);
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+                cells[cells.length - 1].appendChild(fileInput);
+            }
+
+            // Function to save a row
+            function saveRow(row, index) {
+                const cells = row.querySelectorAll('td');
+                for (let i = 0; i < cells.length - 1; i++) {
+                    const input = cells[i].querySelector('input');
+                    cells[i].textContent = input.value;
+                }
+                row.querySelector('button:nth-child(1)').style.display = 'inline'; // Display edit button
+                row.querySelector('button:nth-child(2)').style.display = 'inline'; // Display remove button
+                row.querySelector('button:nth-child(3)').style.display = 'none'; // Hide save button
+
+                // Update student data in localStorage
+                students[index] = {
+                    surname: cells[0].textContent,
+                    firstName: cells[1].textContent,
+                    age: cells[2].textContent,
+                    sex: cells[3].textContent,
+                };
+                localStorage.setItem('students', JSON.stringify(students));
+
+                // Remove file input after saving
+                const fileInput = row.querySelector('input[type="file"]');
+                if (fileInput) {
+                    fileInput.remove();
+                }
+            }
+
+            // Function to remove a row
+            function removeRow(row, index) {
+                row.remove();
+                // Remove corresponding data from arrays
+                students.splice(index, 1);
+                imagePaths.splice(index, 1);
+                localStorage.setItem('students', JSON.stringify(students));
+                localStorage.setItem('imagePaths', JSON.stringify(imagePaths));
+                // Update indices for remaining rows
+                for (let i = index; i < students.length; i++) {
+                    const currentRow = table.rows[i + 1]; // +1 because table.rows[0] is the header row
+                    currentRow.removeEventListener('click', showPicture); // Remove previous event listener
+                    currentRow.addEventListener('click', () => showPicture(i)); // Add new event listener with updated index
+                }
+                showPicture(0); // Show the first picture after removing the row
+            }
+
+            // Function to show a picture based on the row index
+            function showPicture(index) {
+                // Clear previous image
+                pictureContainer.innerHTML = '';
+
+                // Check if the index is within range of imagePaths array
+                if (index >= 0 && index < imagePaths.length) {
+                    // Create new image element
+                    const imageElement = document.createElement('img');
+                    imageElement.src = imagePaths[index];
+                    imageElement.alt = 'Picture';
+                    imageElement.style.maxWidth = '100%';
+
+                    // Append image to container
+                    pictureContainer.appendChild(imageElement);
+                } else {
+                    console.error('Index out of range for imagePaths.');
+                }
+            }
+
+            // Loop through the arrays and create a row for each set of values
+            for (let i = 0; i < students.length; i++) {
+                const row = createTableRow(students[i].surname, students[i].firstName, students[i].age, students[i].sex, i);
+                table.appendChild(row);
+            }
+
+        });
+    </script>
+    <!--<script src="index.js"></script>-->
+</body>
+</html>
